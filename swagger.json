@@ -1,0 +1,2028 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "chat_backend",
+    "version": "v1.0"
+  },
+  "paths": {
+    "/chat/messages/get": {
+      "post": {
+        "tags": [
+          "Chat"
+        ],
+        "summary": "Возвращает входящие и исходящие сообщения текущего пользователя с учётом пагинации",
+        "requestBody": {
+          "description": "Параметры пагинации",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PagingSettings"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PagingSettings"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PagingSettings"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Message"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Message"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Message"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/chat/messages/send": {
+      "post": {
+        "tags": [
+          "Chat"
+        ],
+        "summary": "Посылает сообщение",
+        "requestBody": {
+          "description": "Сообщение",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateMessageQuery"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateMessageQuery"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateMessageQuery"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/chat/messages/count": {
+      "get": {
+        "tags": [
+          "Chat"
+        ],
+        "summary": "Возвращает количество сообщений (исходящих и входящих) текущего пользователя",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/chat/message/mark-as-read": {
+      "post": {
+        "tags": [
+          "Chat"
+        ],
+        "summary": "Отмечает сообщение как прочитанное и возвращает его",
+        "parameters": [
+          {
+            "name": "messageGuid",
+            "in": "query",
+            "description": "Guid сообщения",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecieverInfo"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecieverInfo"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecieverInfo"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ValidationFailure"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ValidationFailure"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ValidationFailure"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/chat/online-users": {
+      "get": {
+        "tags": [
+          "Chat"
+        ],
+        "summary": "Возвращает список подключенных к чату пользователей",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "format": "uuid"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "format": "uuid"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "format": "uuid"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/chat/message/default-templates": {
+      "get": {
+        "tags": [
+          "Chat"
+        ],
+        "summary": "Возвращает стандартные шаблоны сообщений, доступные пользователю\r\nШаблоны отсортированы по Id (по возрастанию)",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DefaultMessageTemplate"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DefaultMessageTemplate"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DefaultMessageTemplate"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/chat/message/user-templates": {
+      "get": {
+        "tags": [
+          "Chat"
+        ],
+        "summary": "Возвращает пользовательские шаблоны сообщений\r\nШаблоны отсортированы по ModifiedDateTime (по возрастанию)",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MessageTemplate"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MessageTemplate"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MessageTemplate"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/chat/message/placeholders": {
+      "get": {
+        "tags": [
+          "Chat"
+        ],
+        "summary": "Возвращает доступные плейсхолдеры для шаблонов сообщений",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Placeholder"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Placeholder"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Placeholder"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/chat/message/fill-placeholders": {
+      "post": {
+        "tags": [
+          "Chat"
+        ],
+        "summary": "Возвращает текст шаблона сообщения, в котором все плейсхолдеры заменены на данные исходя из\r\nконтекста посыльного",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FillPlaceholders"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FillPlaceholders"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FillPlaceholders"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/persons": {
+      "get": {
+        "tags": [
+          "Persons"
+        ],
+        "summary": "Возвращает всех военнослужащих, пользующихся чатом",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Person"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Person"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Person"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Persons"
+        ],
+        "summary": "Создаёт запись о военнослужащем, пользующемся чатом\r\nДоступно только администраторам",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePerson"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePerson"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePerson"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Person"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Person"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Person"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ValidationFailure"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ValidationFailure"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ValidationFailure"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/persons/by-guid": {
+      "get": {
+        "tags": [
+          "Persons"
+        ],
+        "summary": "Возвращает военнослужащего, пользующегося чатом, с указанным Guid",
+        "parameters": [
+          {
+            "name": "guid",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Person"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Person"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Person"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/persons/ranks": {
+      "get": {
+        "tags": [
+          "Persons"
+        ],
+        "summary": "Возвращает все воинские звания",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MilitaryRank"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MilitaryRank"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MilitaryRank"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/all": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Возвращает список всех пользователей чата",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/current": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Возвращает пользователя в текущей сессии",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/by-guid/{userGuid}": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Возвращает пользователя с указанным Guid",
+        "parameters": [
+          {
+            "name": "userGuid",
+            "in": "path",
+            "description": "Guid пользователя",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/login": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Аутентифицирует пользователя в чате",
+        "parameters": [
+          {
+            "name": "login",
+            "in": "query",
+            "description": "Логин пользователя",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "Пароль пользователя",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ValidationFailure"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ValidationFailure"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ValidationFailure"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/create": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Создаёт нового пользователя чата",
+        "requestBody": {
+          "description": "Данные нового пользователя",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUser"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUser"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUser"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ValidationFailure"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ValidationFailure"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ValidationFailure"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/create-messenger": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Создаёт нового посыльного",
+        "requestBody": {
+          "description": "Данные нового посыльного",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateMessenger"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateMessenger"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateMessenger"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ValidationFailure"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ValidationFailure"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ValidationFailure"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/roles/all": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Возвращает все доступные роли пользователей чата",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserRole"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserRole"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserRole"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CreateFullName": {
+        "required": [
+          "firstName",
+          "lastName",
+          "parentName"
+        ],
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "maxLength": 500,
+            "minLength": 1,
+            "type": "string",
+            "description": "Имя",
+            "example": "Иван"
+          },
+          "lastName": {
+            "maxLength": 500,
+            "minLength": 1,
+            "type": "string",
+            "description": "Фамилия",
+            "example": "Иванов"
+          },
+          "parentName": {
+            "maxLength": 500,
+            "minLength": 1,
+            "type": "string",
+            "description": "Отчество",
+            "example": "Иванович"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Создаёт ФИО"
+      },
+      "CreateMessageQuery": {
+        "required": [
+          "content",
+          "personGuid",
+          "recieversGuids"
+        ],
+        "type": "object",
+        "properties": {
+          "recieversGuids": {
+            "minLength": 1,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Список Guid получателей сообщения"
+          },
+          "personGuid": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Guid военнослужащего, отправляющего сообщение",
+            "format": "uuid"
+          },
+          "content": {
+            "maxLength": 2000,
+            "minLength": 1,
+            "type": "string",
+            "description": "Текст сообщения",
+            "example": "Текст сообщения."
+          }
+        },
+        "additionalProperties": false,
+        "description": "Данные для отправки сообщения"
+      },
+      "CreateMessenger": {
+        "type": "object",
+        "properties": {
+          "company": {
+            "type": "integer",
+            "description": "Номер роты.",
+            "format": "int32",
+            "nullable": true,
+            "example": 1
+          },
+          "password": {
+            "type": "string",
+            "description": "Пароль пользователя.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Создаёт посыльного"
+      },
+      "CreateMessengerContext": {
+        "type": "object",
+        "properties": {
+          "company": {
+            "type": "integer",
+            "description": "Номер роты",
+            "format": "int32"
+          },
+          "present": {
+            "type": "integer",
+            "description": "Количество л/с налицо",
+            "format": "int32"
+          },
+          "leave": {
+            "type": "integer",
+            "description": "Количество л/с в увольнении",
+            "format": "int32"
+          },
+          "hospitalized": {
+            "type": "integer",
+            "description": "Количество л/с в госпитале",
+            "format": "int32"
+          },
+          "business": {
+            "type": "integer",
+            "description": "Количество л/с в командировке",
+            "format": "int32"
+          },
+          "dailyMessenger": {
+            "type": "string",
+            "description": "Посыльный дневной смены",
+            "format": "uuid"
+          },
+          "nightlyMessenger": {
+            "type": "string",
+            "description": "Посыльный ночной смены",
+            "format": "uuid"
+          },
+          "dpcHelper": {
+            "type": "string",
+            "description": "Помощник дежурного по ЦОД",
+            "format": "uuid"
+          },
+          "techopolisMessenger": {
+            "type": "string",
+            "description": "Посыльный по технополису",
+            "format": "uuid"
+          },
+          "technopolisHelper": {
+            "type": "string",
+            "description": "Помощник дежурного по технополису",
+            "format": "uuid"
+          },
+          "responsible": {
+            "type": "string",
+            "description": "Ответственный по роте",
+            "format": "uuid"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Создаёт контекст посыльного"
+      },
+      "CreatePerson": {
+        "required": [
+          "fullName",
+          "militaryRankId"
+        ],
+        "type": "object",
+        "properties": {
+          "fullName": {
+            "$ref": "#/components/schemas/CreateFullName"
+          },
+          "militaryRankId": {
+            "type": "integer",
+            "description": "Id воинского звания",
+            "format": "int32",
+            "example": 1
+          }
+        },
+        "additionalProperties": false,
+        "description": "Создаёт запись о военнослужащем"
+      },
+      "CreateUser": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Имя пользователя.",
+            "nullable": true,
+            "example": "Посыльный 1 научной роты"
+          },
+          "shortName": {
+            "type": "string",
+            "description": "Короткое имя пользователя.",
+            "nullable": true,
+            "example": "1 НР"
+          },
+          "login": {
+            "type": "string",
+            "description": "Логин пользователя.",
+            "nullable": true,
+            "example": "era1"
+          },
+          "password": {
+            "type": "string",
+            "description": "Пароль пользователя.",
+            "nullable": true
+          },
+          "roles": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "description": "Роли пользователя.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Создаёт нового пользователя чата."
+      },
+      "DefaultMessageTemplate": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Id шаблона",
+            "format": "int32",
+            "readOnly": true
+          },
+          "roleId": {
+            "type": "integer",
+            "description": "Id роли пользователей",
+            "format": "int32",
+            "readOnly": true
+          },
+          "content": {
+            "type": "string",
+            "description": "Содержимое шаблона",
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Стандартный (неизменяемый) шаблон сообщений"
+      },
+      "FillPlaceholders": {
+        "required": [
+          "messageTemplateContent",
+          "messengerContext"
+        ],
+        "type": "object",
+        "properties": {
+          "messageTemplateContent": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Шаблон сообщения"
+          },
+          "messengerContext": {
+            "$ref": "#/components/schemas/CreateMessengerContext"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Заполняет плейсхолдеры в шаблоне сообщения"
+      },
+      "FullName": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "description": "Имя",
+            "nullable": true,
+            "readOnly": true
+          },
+          "lastName": {
+            "type": "string",
+            "description": "Фамилия",
+            "nullable": true,
+            "readOnly": true
+          },
+          "parentName": {
+            "type": "string",
+            "description": "Отчество",
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "ФИО"
+      },
+      "Message": {
+        "type": "object",
+        "properties": {
+          "guid": {
+            "type": "string",
+            "description": "Guid сообщения",
+            "format": "uuid",
+            "readOnly": true
+          },
+          "senderInfo": {
+            "$ref": "#/components/schemas/SenderInfo"
+          },
+          "recieversInfo": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RecieverInfo"
+            },
+            "description": "Информация о получателях сообщения",
+            "nullable": true,
+            "readOnly": true
+          },
+          "content": {
+            "type": "string",
+            "description": "Текст сообщения",
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Сообщение"
+      },
+      "MessageTemplate": {
+        "type": "object",
+        "properties": {
+          "guid": {
+            "type": "string",
+            "description": "Guid шаблона",
+            "format": "uuid",
+            "readOnly": true
+          },
+          "userGuid": {
+            "type": "string",
+            "description": "Guid пользователя, создавшего шаблон",
+            "format": "uuid",
+            "readOnly": true
+          },
+          "modifiedDateTime": {
+            "type": "string",
+            "description": "Дата и время последнего изменения шаблона",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "content": {
+            "type": "string",
+            "description": "Содержимое шаблона",
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Пользовательский шаблон сообщения"
+      },
+      "MilitaryRank": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Id воинского звания",
+            "format": "int32",
+            "readOnly": true
+          },
+          "fullName": {
+            "type": "string",
+            "description": "Полное название звания",
+            "nullable": true,
+            "readOnly": true
+          },
+          "shortName": {
+            "type": "string",
+            "description": "Сокращенное название звания",
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Воинское звание"
+      },
+      "PagingSettings": {
+        "type": "object",
+        "properties": {
+          "pageSize": {
+            "maximum": 100,
+            "minimum": 5,
+            "type": "integer",
+            "description": "Количество сообщений, выводимых на одной странице",
+            "format": "int32"
+          },
+          "page": {
+            "minimum": 0,
+            "exclusiveMinimum": true,
+            "type": "integer",
+            "description": "Номер страницы",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Параметры пагинации"
+      },
+      "Person": {
+        "type": "object",
+        "properties": {
+          "guid": {
+            "type": "string",
+            "description": "Guid военнослужащего",
+            "format": "uuid",
+            "readOnly": true
+          },
+          "fullName": {
+            "$ref": "#/components/schemas/FullName"
+          },
+          "rank": {
+            "$ref": "#/components/schemas/MilitaryRank"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Военнослужащий"
+      },
+      "Placeholder": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "string",
+            "description": "Текст плейсхолдера",
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Плейсхолдер в шаблоне сообщения посыльного по роте"
+      },
+      "ProblemDetails": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "instance": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": { }
+      },
+      "RecieverInfo": {
+        "type": "object",
+        "properties": {
+          "recieverGuid": {
+            "type": "string",
+            "description": "Guid получателя",
+            "format": "uuid",
+            "readOnly": true
+          },
+          "recievedDateTime": {
+            "type": "string",
+            "description": "Дата и время получения сообщения. Default, если сообщение ещё не было получено",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "readDateTime": {
+            "type": "string",
+            "description": "Дата и время отметки сообщения как прочтённого. Default, если сообщение ещё не было прочтено",
+            "format": "date-time",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Информация о получателе сообщения"
+      },
+      "SenderInfo": {
+        "type": "object",
+        "properties": {
+          "senderGuid": {
+            "type": "string",
+            "description": "Guid отправителя сообщения",
+            "format": "uuid",
+            "readOnly": true
+          },
+          "personGuid": {
+            "type": "string",
+            "description": "Guid военнослужащего, отправившего сообщение",
+            "format": "uuid",
+            "readOnly": true
+          },
+          "sendDateTime": {
+            "type": "string",
+            "description": "Дата отправки сообщения",
+            "format": "date-time",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Информация об отправителе сообщения"
+      },
+      "Severity": {
+        "enum": [
+          0,
+          1,
+          2
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "UserDto": {
+        "type": "object",
+        "properties": {
+          "guid": {
+            "type": "string",
+            "description": "Guid пользователя",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "description": "Имя пользователя",
+            "nullable": true
+          },
+          "shortName": {
+            "type": "string",
+            "description": "Короткое имя пользователя",
+            "nullable": true
+          },
+          "login": {
+            "type": "string",
+            "description": "Логин пользователя",
+            "nullable": true
+          },
+          "roles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserRole"
+            },
+            "description": "Роли пользователя",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Данные о пользователе чата"
+      },
+      "UserRole": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Id роли",
+            "format": "int32",
+            "readOnly": true
+          },
+          "name": {
+            "type": "string",
+            "description": "Название роли",
+            "nullable": true,
+            "readOnly": true
+          },
+          "normalizedName": {
+            "type": "string",
+            "description": "Нормализованное название роли",
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Роль пользователя чата"
+      },
+      "ValidationFailure": {
+        "type": "object",
+        "properties": {
+          "propertyName": {
+            "type": "string",
+            "nullable": true
+          },
+          "errorMessage": {
+            "type": "string",
+            "nullable": true
+          },
+          "attemptedValue": {
+            "nullable": true
+          },
+          "customState": {
+            "nullable": true
+          },
+          "severity": {
+            "$ref": "#/components/schemas/Severity"
+          },
+          "errorCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "formattedMessagePlaceholderValues": {
+            "type": "object",
+            "additionalProperties": { },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "securitySchemes": {
+      "jwt_auth": {
+        "type": "http",
+        "description": "Please insert JWT with Bearer into field",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [
+    {
+      "jwt_auth": [ ]
+    }
+  ]
+}

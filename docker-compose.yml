@@ -1,0 +1,37 @@
+version: "3.8"
+
+networks:
+  chat-backend-net:
+    driver: bridge
+
+services:
+  chat-backend:
+    image: chat-backend:latest
+    depends_on:
+      - "postgres-image"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8002:80"
+    environment:
+      DB_CONNECTION_STRING: "host=postgres-image;port=5432;database=chat;username=chat;password=chat"
+      CORS_ORIGINS: "http://localhost:8101;http://10.0.0.140:8101"
+    networks:
+      - "chat-backend-net"
+
+  postgres-image:
+    image: postgres:latest
+    ports:
+      - "5432:5432" 
+    restart: "always"
+    volumes:
+      - db_volume:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: "chat"
+      POSTGRES_PASSWORD: "chat"
+      POSTGRES_DB: "chat"
+    networks:
+      - "chat-backend-net"
+volumes:
+  db_volume:
